@@ -4,8 +4,8 @@
 
 pkgname=crashplan-pro
 _pkgname=crashplan
-pkgver=11.2.1
-_pkgbuild=23
+pkgver=11.3.1
+_pkgbuild=3
 pkgrel=1
 pkgdesc="A business online/offsite backup solution"
 url="https://www.crashplan.com/en-us/small-business/"
@@ -20,12 +20,14 @@ source=(https://download.crashplan.com/installs/agent/cloud/${pkgver}/${_pkgbuil
         crashplan-pro.service
         upgrade.sh
         crashplan-pro_upgrade.service
-        crashplan-pro_upgrade.path)
-sha1sums=('c337bf7599280a23f97fc1d75f08c87b0843b084'
+        crashplan-pro_upgrade.path
+        unsupported-os.patch)
+sha1sums=('3193707179b103bebbd7aeae9c6c0b81bc4179ef'
           '194c2022af9809ba9a4694c747db01124c550ffb'
           'a3a5ead8b8fd867f47782b12bc27b1fb145565ac'
           'c24e2ba2b2d6831246ea4af072305ddf5d1fd774'
-          '0dfbf0ef3df2ad386419def132c28d63560f6e4e')
+          '0dfbf0ef3df2ad386419def132c28d63560f6e4e'
+          '2eaf643ec82bd49e4cca0e3d22fd176126ecb629')
 options=(!strip)
 build() {
   cd $srcdir/crashplan-install
@@ -55,13 +57,22 @@ EOF
   sed -i '/^install_launcher/ s/./#&/' install.sh
   sed -i '/^start_service/ s/./#&/' install.sh
   sed -i '/^prompt_to_start_desktop/ s/./#&/' install.sh
+
+  patch install.sh $srcdir/unsupported-os.patch
+
+  mkdir -vp $srcdir/CrashPlan
+  tar xvf $srcdir/crashplan-install/CrashPlan.tgz -C $srcdir/CrashPlan
 }
 
 package() {
   mkdir -p $pkgdir/opt/$_pkgname
 
   cd ${srcdir}/crashplan-install
-  ./install.sh -v -q -x $pkgdir/opt/ -u $USER
+  ./install.sh -v -q -x $pkgdir/opt/
+
+  # remove unused crashplan.service created by install.sh
+  # TODO: use it instead of ours, modify the Exec paths, and install it at the proper location
+  rm $pkgdir/opt/crashplan/etc/crashplan.service
 
   cd $pkgdir/opt/$_pkgname
 
@@ -73,12 +84,12 @@ package() {
   # Fix for encoding troubles (CrashPlan ticket 178827)
   # Make sure the daemon is running using the same localization as
   # the (installing) user
-  echo "LC_ALL=$LANG" > $srcdir/crashplan-install/scripts/run.conf
+  echo "LC_ALL=$LANG" > $srcdir/CrashPlan/bin/run.conf
 
   install -D -m 644 $srcdir/crashplan-install/install.vars install.vars
-  install -D -m 644 $srcdir/crashplan-install/scripts/run.conf bin/run.conf
-  install -D -m 755 $srcdir/crashplan-install/scripts/crashplan.desktop $pkgdir/usr/share/applications/crashplan.desktop
-  install -D -m 755 $srcdir/crashplan-install/scripts/service.sh bin/service.sh
+  install -D -m 644 $srcdir/CrashPlan/bin/run.conf bin/run.conf
+  install -D -m 755 $srcdir/CrashPlan/bin/crashplan.desktop $pkgdir/usr/share/applications/crashplan.desktop
+  install -D -m 755 $srcdir/CrashPlan/bin/service.sh bin/service.sh
   install -D -m 755 $srcdir/upgrade.sh bin/upgrade.sh
 
   # systemd unit
