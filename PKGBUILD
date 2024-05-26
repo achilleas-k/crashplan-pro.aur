@@ -12,10 +12,8 @@ url="https://www.crashplan.com/en-us/small-business/"
 arch=('x86_64')
 license=('custom')
 depends=('bash' 'java-runtime-headless=8' 'alsa-lib' 'gtk3' 'libxss' 'inetutils' 'slf4j')
-# We are trying without gconf or gtk3
 makedepends=('cpio')
 conflicts=('crashplan')
-# install=crashplan-pro.install
 source=(https://download.crashplan.com/installs/agent/cloud/${pkgver}/${_pkgbuild}/install/CrashPlanSmb_${pkgver}_${_pkgbuild}_Linux.tgz
         crashplan-pro.service
         upgrade.sh
