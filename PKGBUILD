@@ -52,11 +52,9 @@ DIR_BASENAME=$_pkgname
 APP_DATA_BASE_NAME_LOWER=crashplan
 EOF
 
-  sed -i '/^resolve_native_libraries/ s/./#&/' install.sh
   sed -i '/^install_service_script/ s/./#&/' install.sh
   sed -i '/^install_launcher/ s/./#&/' install.sh
   sed -i '/^start_service/ s/./#&/' install.sh
-  sed -i '/^prompt_to_start_desktop/ s/./#&/' install.sh
 
   patch install.sh $srcdir/unsupported-os.patch
 
