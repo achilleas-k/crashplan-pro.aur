@@ -65,6 +65,11 @@ EOF
   echo "Extracting CrashPlan.tgz"
   tar xf $srcdir/crashplan-install/CrashPlan.tgz -C $srcdir/CrashPlan
 
+  # do the necessary bits from install_launcher here:
+  #  - Set Exec path
+  #  - Set Icon path
+  sed -i "s|Exec=|Exec=/opt/${_pkgname}/bin/desktop.sh|" "${srcdir}/CrashPlan/bin/crashplan.desktop"
+  sed -i "s|Icon=|Icon=/opt/${_pkgname}/bin/icon_app3.png|" "${srcdir}/CrashPlan/bin/crashplan.desktop"
 }
 
 package() {
