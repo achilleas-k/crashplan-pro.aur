@@ -31,9 +31,9 @@ build() {
   cd $srcdir/crashplan-install
 
   echo ""
-  echo "You must review and agree to the EULA before using CrashPlan PRO."
+  echo "You must review and agree to the CrashPlan Terms and Conditions of Service before using CrashPlan Pro."
   echo "You can do so at:"
-  echo "  - https://support.code42.com/Terms_and_conditions/Legal_terms_and_conditions/CrashPlan_for_Small_Business_EULA"
+  echo "  - https://www.crashplan.com/terms-conditions/"
   echo ""
 
   echo "Preparing install.vars"
