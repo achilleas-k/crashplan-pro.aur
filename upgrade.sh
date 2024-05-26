@@ -30,11 +30,9 @@ echo "LC_ALL=$LANG" > ${UPDATE_PATH}/run.conf
 /usr/bin/sed -i  's/^MANIFEST_DIR=$/MANIFEST_DIR=\/opt\/crashplan\/manifest/g' ${UPDATE_PATH}/install.sh
 /usr/bin/sed -i  's/^APP_BASENAME=.*$/APP_BASENAME="CrashPlan"/g' ${UPDATE_PATH}/install.sh
 
-/usr/bin/sed -i '/^resolve_native_libraries/ s/./#&/' ${UPDATE_PATH}/install.sh
 /usr/bin/sed -i '/^install_service_script/ s/./#&/' ${UPDATE_PATH}/install.sh
 /usr/bin/sed -i '/^install_launcher/ s/./#&/' ${UPDATE_PATH}/install.sh
 /usr/bin/sed -i '/^start_service/ s/./#&/' ${UPDATE_PATH}/install.sh
-/usr/bin/sed -i '/^prompt_to_start_desktop/ s/./#&/' ${UPDATE_PATH}/install.sh
 
 # And the uninstall section
 /usr/bin/sed -i '/^[[:blank:]]*verify_target_user_dir/ s/./:#&/' ${UPDATE_PATH}/uninstall.sh

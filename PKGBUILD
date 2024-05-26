@@ -24,7 +24,7 @@ source=(https://download.crashplan.com/installs/agent/cloud/${pkgver}/${_pkgbuil
         unsupported-os.patch)
 sha1sums=('3193707179b103bebbd7aeae9c6c0b81bc4179ef'
           '194c2022af9809ba9a4694c747db01124c550ffb'
-          'a3a5ead8b8fd867f47782b12bc27b1fb145565ac'
+          '8135b6e0fca07b5e3793faa8064ec480efda0063'
           'c24e2ba2b2d6831246ea4af072305ddf5d1fd774'
           '0dfbf0ef3df2ad386419def132c28d63560f6e4e'
           '2eaf643ec82bd49e4cca0e3d22fd176126ecb629')
