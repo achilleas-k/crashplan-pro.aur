@@ -38,8 +38,7 @@ build() {
   echo "  - https://support.code42.com/Terms_and_conditions/Legal_terms_and_conditions/CrashPlan_for_Small_Business_EULA"
   echo ""
 
-
-
+  echo "Preparing install.vars"
   cat <<EOF > install.vars
 TARGETDIR=/opt/$_pkgname
 BINSDIR=/opt/$_pkgname/bin
@@ -52,14 +51,20 @@ DIR_BASENAME=$_pkgname
 APP_DATA_BASE_NAME_LOWER=crashplan
 EOF
 
+  echo "Modifying install.sh"
+  # skip some functions that don't work for us
   sed -i '/^install_service_script/ s/./#&/' install.sh
   sed -i '/^install_launcher/ s/./#&/' install.sh
   sed -i '/^start_service/ s/./#&/' install.sh
 
+  # make the unsupported os prompt default to 'y'
   patch install.sh $srcdir/unsupported-os.patch
 
   mkdir -vp $srcdir/CrashPlan
-  tar xvf $srcdir/crashplan-install/CrashPlan.tgz -C $srcdir/CrashPlan
+
+  echo "Extracting CrashPlan.tgz"
+  tar xf $srcdir/crashplan-install/CrashPlan.tgz -C $srcdir/CrashPlan
+
 }
 
 package() {
